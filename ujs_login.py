@@ -7,6 +7,7 @@ import requests
 from time import sleep
 from PIL import Image
 from conf import number, pwd
+from get_courses import get_courses
 
 url = 'http://my.ujs.edu.cn'
 
@@ -44,8 +45,10 @@ def login():
     login_url = url + "/userPasswordValidate.portal"
     res_up = session.post(login_url, data=data, headers=headers)
     #获取iPlanetDirectoryPro Cookie
+    print(res_up.headers['Set-Cookie'])
     ip_cookie = res_up.headers['Set-Cookie'].split(';')[0]
     ip_cookie = ip_cookie.split('=')[1]
+
     if ip_cookie == '':
         print('ERROR')
         return
@@ -59,3 +62,4 @@ def login():
 if __name__ == '__main__': 
     if get_captcha():
         login()
+        get_courses(headers['Cookie'])
